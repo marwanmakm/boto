@@ -2,9 +2,8 @@ version: '3.9'
 
 services:
 
-  db:
-    image: postgres
-    restart: always
+  postgres:
+    image: postgres:16.2
     # set shared memory limit when using docker-compose
     shm_size: 128mb
     # or set shared memory limit when deploy via swarm stack
@@ -13,11 +12,17 @@ services:
     #    target: /dev/shm
     #    tmpfs:
     #      size: 134217728 # 128*2^20 bytes = 128Mb
+    ports:
+      - "5432:5432"
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: example
 
-  adminer:
-    image: adminer
-    restart: always
+  pg-admin:
+    image: dpage/pgadmin4:8.4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@email.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 5050
     ports:
-      - 8080:8080
+      - "5050:5050"
