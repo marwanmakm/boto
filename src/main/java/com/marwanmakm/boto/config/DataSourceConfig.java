@@ -16,7 +16,7 @@ public class DataSourceConfig {
   @Bean
   @Qualifier("datasource")
   @Profile("local")
-  public DataSource getDataSource(
+  public DataSource getLocalDataSource(
       final @Value("${spring.datasource.host}") String host,
       final @Value("${spring.datasource.port}") String port,
       final @Value("${spring.datasource.db}") String db,
@@ -29,13 +29,14 @@ public class DataSourceConfig {
         .build();
   }
 
-  //    @Bean
-  //    @Qualifier("datasource")
-  //    @Profile("integration_test")
-  //    public DataSource getDataSourceTest() {
-  //        return DataSourceBuilder.create()
-  //                .url("jdbc:h2:mem:testdb")
-  //                .username("sa")
-  //                .build();
-  //    }
+  @Bean
+  @Qualifier("datasource")
+  @Profile("integration_test")
+  public DataSource getTestDataSource() {
+    return DataSourceBuilder.create()
+        .driverClassName("org.h2.Driver")
+        .url("jdbc:h2:mem:testdb")
+        .username("sa")
+        .build();
+  }
 }

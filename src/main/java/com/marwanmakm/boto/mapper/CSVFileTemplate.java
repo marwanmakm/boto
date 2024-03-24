@@ -11,8 +11,8 @@ import org.springframework.lang.Nullable;
 
 public class CSVFileTemplate {
 
-  // timemilis_source_transactions.csv
-  private static final String FILE_PATH_FORMAT = "./export/%s_%s_transactions";
+  // time-milis_source_transactions.csv
+  private static final String FILE_PATH_FORMAT = "./export/%s_%s_transactions.csv";
 
   private List<Row> rows;
 
@@ -53,7 +53,8 @@ public class CSVFileTemplate {
 
   // TODO: Repair File Path
   private static String createNewFilePath() {
-    String currentMilis = String.valueOf(System.currentTimeMillis());
+    // String currentMilis = String.valueOf(System.currentTimeMillis());
+    String currentMilis = "1";
     String bankId = "bdc_tdc";
 
     return String.format(FILE_PATH_FORMAT, currentMilis, bankId);
@@ -61,7 +62,6 @@ public class CSVFileTemplate {
 
   @Builder
   public record Row(
-      String composedId,
       String date,
       @Nullable String time,
       String amount,
@@ -71,7 +71,21 @@ public class CSVFileTemplate {
       @Nullable String categoryTag) {
     public List<String> toValueArray() {
 
-      return List.of(composedId, date, time, amount, comment, account, operationType, categoryTag);
+      // TODO: Acomodar el valor por defecto del tiempo
+      final var composedId = String.format("%s_%s_%s", date, checkEmpty(time), account);
+      return List.of(
+          composedId,
+          date,
+          checkEmpty(time),
+          amount,
+          checkEmpty(comment),
+          account,
+          operationType,
+          checkEmpty(categoryTag));
+    }
+
+    private static String checkEmpty(String value) {
+      return value != null ? value : "";
     }
   }
 }

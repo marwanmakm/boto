@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,8 +46,8 @@ public class DataLoaderController {
    * @param body
    * @return
    */
-  @PostMapping("/load-file")
-  public ResponseEntity<?> loadFile(@RequestBody String body) {
-    return new ResponseEntity<>("hola", HttpStatus.CREATED);
+  @PostMapping("/load-data")
+  public ResponseEntity<?> loadData(@RequestParam("file") MultipartFile file) throws IOException {
+    return new ResponseEntity<>(dataLoaderService.load(file), HttpStatus.CREATED);
   }
 }
