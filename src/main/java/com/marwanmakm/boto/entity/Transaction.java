@@ -7,7 +7,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.sql.Date;
 import java.sql.Time;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 public class Transaction {
 
@@ -15,18 +19,18 @@ public class Transaction {
   String composedId;
   Date date;
   Time time;
-  Float amount;
+  Double amount;
   String comment;
 
   @ManyToOne
-  @JoinColumn(name = "id")
-  Account acoount;
+  @JoinColumn(name = "account_id")
+  Account account;
 
   @ManyToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "opertation_type_id")
   OperationType operationType;
 
   @ManyToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "category_tag_id")
   CategoryTag categoryTag;
 }

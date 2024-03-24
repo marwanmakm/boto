@@ -12,14 +12,14 @@ public class Account {
   String description;
 
   @ManyToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "bank_id")
   Bank bank;
 
   @ManyToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "account_type_id")
   AccountType accountType;
 
   @ManyToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "currency_id")
   Currency currency;
 }

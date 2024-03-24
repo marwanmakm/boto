@@ -13,6 +13,6 @@ public class AccountCalculatedValue {
   Float amount;
 
   @ManyToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "account_id")
   Account account;
 }

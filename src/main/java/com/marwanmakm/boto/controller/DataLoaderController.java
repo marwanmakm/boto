@@ -2,6 +2,7 @@ package com.marwanmakm.boto.controller;
 
 import com.marwanmakm.boto.service.DataLoaderService;
 import com.marwanmakm.boto.service.FileFormatterService;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,10 @@ public class DataLoaderController {
    */
   @PostMapping("/format-file/{source_type}")
   public ResponseEntity<?> formatFile(
-      @RequestParam("file") MultipartFile file, @PathVariable("source_type") String sourceType) {
-    return new ResponseEntity<>("hola", HttpStatus.CREATED);
+      @RequestParam("file") MultipartFile file, @PathVariable("source_type") String sourceType)
+      throws IOException {
+    return new ResponseEntity<>(
+        fileFormatterService.formatFile(file, sourceType), HttpStatus.CREATED);
   }
 
   /**

@@ -1,8 +1,8 @@
 package com.marwanmakm.boto.dao;
 
-import com.marwanmakm.boto.entity.Currency;
+import com.marwanmakm.boto.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ICurrenciesDAO extends JpaRepository<Currency, String> {}
+public interface TransactionsDAO extends JpaRepository<Transaction, Long> {}

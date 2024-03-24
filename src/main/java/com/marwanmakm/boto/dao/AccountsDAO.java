@@ -5,4 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IAccountsDAO extends JpaRepository<Account, String> {}
+public interface AccountsDAO extends JpaRepository<Account, String> {}

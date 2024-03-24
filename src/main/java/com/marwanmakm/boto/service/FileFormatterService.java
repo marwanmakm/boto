@@ -1,3 +1,11 @@
 package com.marwanmakm.boto.service;
 
-public interface FileFormatterService {}
+import com.marwanmakm.boto.dto.OperationResponseDto;
+import java.io.IOException;
+import org.springframework.web.multipart.MultipartFile;
+
+public interface FileFormatterService {
+
+  // Receives a certain file and format it to standard structure.
+  OperationResponseDto formatFile(MultipartFile file, String sourceType) throws IOException;
+}

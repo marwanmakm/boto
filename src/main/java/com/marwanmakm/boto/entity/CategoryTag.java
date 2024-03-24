@@ -13,6 +13,6 @@ public class CategoryTag {
   String description;
 
   @ManyToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "category_id")
   Category category;
 }
