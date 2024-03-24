@@ -1,14 +1,20 @@
 package com.marwanmakm.boto.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.Locale;
+import lombok.Getter;
 
-@Entity
-@Table(name = "operations_types")
-public class OperationType {
+@Getter
+public enum OperationType {
+  INCOME("income"),
+  OUTCOME("outcome");
 
-  @Id String id;
-  String name;
-  String description;
+  private final String id;
+
+  OperationType(String id) {
+    this.id = id;
+  }
+
+  public static OperationType findById(String id) {
+    return valueOf(id.toUpperCase(Locale.ROOT));
+  }
 }

@@ -13,8 +13,20 @@ public class CSVFileTemplate {
 
   // time-milis_source_transactions.csv
   private static final String FILE_PATH_FORMAT = "./export/%s_%s_transactions.csv";
+  public static final String[] HEADERS = {
+    "composed_id", "date", "time", "amount", "comment", "account", "operation_type", "category_tag"
+  };
 
   private List<Row> rows;
+
+  // TODO: Repair File Path
+  private static String createNewFilePath() {
+    // String currentMilis = String.valueOf(System.currentTimeMillis());
+    String currentMilis = "1";
+    String bankId = "bdc_tdc";
+
+    return String.format(FILE_PATH_FORMAT, currentMilis, bankId);
+  }
 
   public void addRow(Row row) {
     if (this.rows == null) {
@@ -29,17 +41,7 @@ public class CSVFileTemplate {
 
     // Create CSVPrinter object with custom CSVFormat
     CSVPrinter csvPrinter =
-        new CSVPrinter(
-            fileWriter,
-            CSVFormat.DEFAULT.withHeader(
-                "composed_id",
-                "date",
-                "time",
-                "amount",
-                "comment",
-                "account",
-                "operation_type",
-                "category_tag"));
+        new CSVPrinter(fileWriter, CSVFormat.DEFAULT.builder().setHeader(HEADERS).build());
 
     // Write records to the CSV file
     for (Row row : rows) {
@@ -51,15 +53,6 @@ public class CSVFileTemplate {
     System.out.println("CSV file created successfully.");
   }
 
-  // TODO: Repair File Path
-  private static String createNewFilePath() {
-    // String currentMilis = String.valueOf(System.currentTimeMillis());
-    String currentMilis = "1";
-    String bankId = "bdc_tdc";
-
-    return String.format(FILE_PATH_FORMAT, currentMilis, bankId);
-  }
-
   @Builder
   public record Row(
       String date,
@@ -69,6 +62,10 @@ public class CSVFileTemplate {
       String account,
       String operationType,
       @Nullable String categoryTag) {
+    private static String checkEmpty(String value) {
+      return value != null ? value : "";
+    }
+
     public List<String> toValueArray() {
 
       // TODO: Acomodar el valor por defecto del tiempo
@@ -82,10 +79,6 @@ public class CSVFileTemplate {
           account,
           operationType,
           checkEmpty(categoryTag));
-    }
-
-    private static String checkEmpty(String value) {
-      return value != null ? value : "";
     }
   }
 }

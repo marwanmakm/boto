@@ -1,9 +1,15 @@
 package com.marwanmakm.boto.mapper.mappers;
 
+import static com.marwanmakm.boto.entity.OperationType.INCOME;
+import static com.marwanmakm.boto.entity.OperationType.OUTCOME;
+
 import com.marwanmakm.boto.mapper.AbstractTransactionsMapper;
 import com.marwanmakm.boto.mapper.CSVFileTemplate;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -26,7 +32,7 @@ public class BancoDeChileCreditCardTransactionsMapper extends AbstractTransactio
   }
 
   @Override
-  public CSVFileTemplate map(InputStream inputStream) throws IOException {
+  public CSVFileTemplate map(InputStream inputStream) throws IOException, ParseException {
     Workbook excelFile = new HSSFWorkbook(inputStream);
     Sheet sheet = excelFile.getSheetAt(0);
 
@@ -43,12 +49,19 @@ public class BancoDeChileCreditCardTransactionsMapper extends AbstractTransactio
 
       // TODO: Ajustar convención de ingreso y egreso de esta cuenta
       var amount = r.getCell(AMOUNT_COLUMN).getNumericCellValue();
-      rowBuilder.operationType(amount < 0 ? "ingreso" : "egreso");
+      rowBuilder.operationType(amount < 0 ? INCOME.getId() : OUTCOME.getId());
       rowBuilder.amount(String.valueOf(Math.abs(amount)));
-
       rowBuilder.account(ACCOUNT_ID);
-      rowBuilder.date(r.getCell(DATE_COLUMN).getStringCellValue());
       rowBuilder.comment(r.getCell(DESCRIPTION_COLUMN).getStringCellValue());
+
+      String dateValue = r.getCell(DATE_COLUMN).getStringCellValue();
+      SimpleDateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy");
+      Date date = inputFormat.parse(dateValue);
+
+      SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd");
+      String format = outputFormat.format(date);
+      // TODO: Ajustar formateo de fechas
+      rowBuilder.date(format);
 
       template.addRow(rowBuilder.build());
 

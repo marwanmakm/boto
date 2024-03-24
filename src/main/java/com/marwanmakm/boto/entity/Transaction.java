@@ -1,6 +1,10 @@
 package com.marwanmakm.boto.entity;
 
+import jakarta.annotation.Nullable;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,7 +28,7 @@ public class Transaction {
 
   String composedId;
   Date date;
-  Time time;
+  @Nullable Time time;
   Double amount;
   String comment;
 
@@ -32,8 +36,8 @@ public class Transaction {
   @JoinColumn(name = "account_id")
   Account account;
 
-  @ManyToOne
-  @JoinColumn(name = "opertation_type_id")
+  @Enumerated(EnumType.STRING) // Map the Java enum to a String
+  @Column(name = "operation_type")
   OperationType operationType;
 
   @ManyToOne

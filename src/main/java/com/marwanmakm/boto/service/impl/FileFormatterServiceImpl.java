@@ -5,6 +5,7 @@ import com.marwanmakm.boto.mapper.TransactionsMapperFactory;
 import com.marwanmakm.boto.service.FileFormatterService;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +21,8 @@ public class FileFormatterServiceImpl implements FileFormatterService {
   }
 
   @Override
-  public OperationResponseDto formatFile(MultipartFile file, String sourceType) throws IOException {
+  public OperationResponseDto formatFile(MultipartFile file, String sourceType)
+      throws IOException, ParseException {
 
     final var mapper = transactionsMapperFactory.create(sourceType);
     final var formattedFile = mapper.map(file.getInputStream());
