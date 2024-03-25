@@ -19,13 +19,9 @@ public class CSVFileTemplate {
 
   private List<Row> rows;
 
-  // TODO: Repair File Path
-  private static String createNewFilePath() {
-    // String currentMilis = String.valueOf(System.currentTimeMillis());
-    String currentMilis = "1";
-    String bankId = "bdc_tdc";
-
-    return String.format(FILE_PATH_FORMAT, currentMilis, bankId);
+  private static String createNewFilePath(String sourceType) {
+    String currentMilis = String.valueOf(System.currentTimeMillis());
+    return String.format(FILE_PATH_FORMAT, currentMilis, sourceType);
   }
 
   public void addRow(Row row) {
@@ -35,9 +31,9 @@ public class CSVFileTemplate {
     this.rows.add(row);
   }
 
-  public void createFile() throws IOException {
+  public void createFile(String sourceType) throws IOException {
     // Create FileWriter object with file path
-    FileWriter fileWriter = new FileWriter(createNewFilePath());
+    FileWriter fileWriter = new FileWriter(createNewFilePath(sourceType));
 
     // Create CSVPrinter object with custom CSVFormat
     CSVPrinter csvPrinter =

@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public enum TransactionsMapper {
   BDC_TDC("bdc_tdc"),
-  BDC_CHECK("bcd_check");
+  BDC_CHECK("bdc_check");
 
   private static final Map<String, TransactionsMapper> ENUM_MAP = new ConcurrentHashMap<>();
 

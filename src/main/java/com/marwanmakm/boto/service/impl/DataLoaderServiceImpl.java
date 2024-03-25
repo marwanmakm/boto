@@ -64,12 +64,6 @@ public class DataLoaderServiceImpl implements DataLoaderService {
       transaction.setComment(row.get("comment"));
       transaction.setOperationType(OperationType.findById(row.get("operation_type")));
 
-      //      if (!row.get("time").isEmpty()) {
-      //        transaction.setTime(Time.valueOf(row.get("time")));
-      //      } else {
-      //        transaction.setTime((Time) Time.from(Instant.now()));
-      //      }
-
       if (!row.get("category_tag").isEmpty()) {
         Optional<CategoryTag> categoryTag = categoriesTagsDAO.findById(row.get("category_tag"));
         transaction.setCategoryTag(categoryTag.orElse(null));

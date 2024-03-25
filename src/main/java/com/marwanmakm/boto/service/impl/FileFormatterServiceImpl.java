@@ -28,7 +28,7 @@ public class FileFormatterServiceImpl implements FileFormatterService {
     final var formattedFile = mapper.map(file.getInputStream());
 
     // TODO: Hacer un try catch aquí
-    formattedFile.createFile();
+    formattedFile.createFile(sourceType);
 
     return new OperationResponseDto(
         new Timestamp(System.currentTimeMillis()),
