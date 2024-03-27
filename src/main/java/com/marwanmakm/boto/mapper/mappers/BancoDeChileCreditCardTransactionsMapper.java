@@ -10,10 +10,10 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class BancoDeChileCreditCardTransactionsMapper extends AbstractTransactionsMapper {
 
@@ -33,7 +33,7 @@ public class BancoDeChileCreditCardTransactionsMapper extends AbstractTransactio
 
   @Override
   public CSVFileTemplate map(InputStream inputStream) throws IOException, ParseException {
-    Workbook excelFile = new HSSFWorkbook(inputStream);
+    Workbook excelFile = WorkbookFactory.create(inputStream);
     Sheet sheet = excelFile.getSheetAt(0);
 
     Row r = sheet.getRow(INITIAL_ROW);

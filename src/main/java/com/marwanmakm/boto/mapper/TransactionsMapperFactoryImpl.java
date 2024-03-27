@@ -1,8 +1,10 @@
 package com.marwanmakm.boto.mapper;
 
 import static com.marwanmakm.boto.mapper.TransactionsMapper.BDC_CHECK;
+import static com.marwanmakm.boto.mapper.TransactionsMapper.BDC_CHECK_CSV;
 import static com.marwanmakm.boto.mapper.TransactionsMapper.BDC_TDC;
 
+import com.marwanmakm.boto.mapper.mappers.BancoDeChileCheckAccountCSVTransactionsMapper;
 import com.marwanmakm.boto.mapper.mappers.BancoDeChileCheckAccountTransactionsMapper;
 import com.marwanmakm.boto.mapper.mappers.BancoDeChileCreditCardTransactionsMapper;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ public class TransactionsMapperFactoryImpl implements TransactionsMapperFactory 
     transactionsMap = new HashMap<>();
     transactionsMap.put(BDC_TDC, new BancoDeChileCreditCardTransactionsMapper());
     transactionsMap.put(BDC_CHECK, new BancoDeChileCheckAccountTransactionsMapper());
+    transactionsMap.put(BDC_CHECK_CSV, new BancoDeChileCheckAccountCSVTransactionsMapper());
   }
 
   // TODO: Acomodar esta excepcion

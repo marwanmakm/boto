@@ -10,12 +10,13 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 
+// FIXME: Actualmente, este mapper no funciona. Ocurren problemas de parseo con la data en excel
 public class BancoDeChileCheckAccountTransactionsMapper extends AbstractTransactionsMapper {
 
   private static final String ACCOUNT_ID = "bdc_check";
@@ -35,7 +36,8 @@ public class BancoDeChileCheckAccountTransactionsMapper extends AbstractTransact
 
   @Override
   public CSVFileTemplate map(InputStream inputStream) throws IOException, ParseException {
-    Workbook excelFile = new HSSFWorkbook(inputStream);
+    Workbook excelFile = WorkbookFactory.create(inputStream);
+
     Sheet sheet = excelFile.getSheetAt(0);
 
     Row r = sheet.getRow(INITIAL_ROW);
