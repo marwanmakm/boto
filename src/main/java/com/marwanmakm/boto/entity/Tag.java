@@ -1,14 +1,15 @@
 package com.marwanmakm.boto.entity;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "tags")
+public class Tag {
 
   @Id String id;
   String name;
-  String description;
+  @Nullable String description;
 }

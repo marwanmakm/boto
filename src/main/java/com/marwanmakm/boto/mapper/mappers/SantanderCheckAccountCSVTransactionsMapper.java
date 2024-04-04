@@ -15,14 +15,15 @@ import java.util.Date;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-public class BancoDeChileCheckAccountCSVTransactionsMapper extends AbstractTransactionsMapper {
+public class SantanderCheckAccountCSVTransactionsMapper extends AbstractTransactionsMapper {
 
-  private static final String ACCOUNT_ID = "bdc_check";
+  private static final double ZERO = 0.0;
+  private static final String ACCOUNT_ID = "santander_check";
   private static final String[] HEADERS = {
-    "id", "date", "description", "site", "outcome", "income", "total", "category_tag"
+    "id", "date", "sucursal", "description", "document", "outcome", "income", "category_tag"
   };
 
-  public BancoDeChileCheckAccountCSVTransactionsMapper() {
+  public SantanderCheckAccountCSVTransactionsMapper() {
     super(ACCOUNT_ID);
   }
 
@@ -37,17 +38,31 @@ public class BancoDeChileCheckAccountCSVTransactionsMapper extends AbstractTrans
 
     CSVFileTemplate template = new CSVFileTemplate();
 
+    double outcome = ZERO;
+    double income = ZERO;
+
     for (CSVRecord row : rows) {
       var rowBuilder = CSVFileTemplate.Row.builder();
 
       if (!row.get("outcome").isEmpty()) {
-        rowBuilder.amount(String.valueOf(Math.abs(Double.parseDouble(row.get("outcome")))));
-        rowBuilder.operationType(OUTCOME.getId());
+        outcome = Double.parseDouble(row.get("outcome"));
+        if (outcome != ZERO) {
+          rowBuilder.amount(String.valueOf(Math.abs(outcome)));
+          rowBuilder.operationType(OUTCOME.getId());
+        }
       }
 
       if (!row.get("income").isEmpty()) {
-        rowBuilder.amount(String.valueOf(Math.abs(Double.parseDouble(row.get("income")))));
-        rowBuilder.operationType(INCOME.getId());
+        income = Double.parseDouble(row.get("income"));
+        if (income != ZERO) {
+          rowBuilder.amount(String.valueOf(Math.abs(income)));
+          rowBuilder.operationType(INCOME.getId());
+        }
+      }
+
+      // This instruction is given by the fact that in the report, some rows have zero and zero
+      if (income == ZERO && outcome == ZERO) {
+        continue;
       }
 
       rowBuilder.id(row.get("id"));

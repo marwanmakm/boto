@@ -1,12 +1,12 @@
 package com.marwanmakm.boto.mapper;
 
 import static com.marwanmakm.boto.mapper.TransactionsMapper.BDC_CHECK;
-import static com.marwanmakm.boto.mapper.TransactionsMapper.BDC_CHECK_CSV;
 import static com.marwanmakm.boto.mapper.TransactionsMapper.BDC_TDC;
+import static com.marwanmakm.boto.mapper.TransactionsMapper.SANTANDER_CHECK;
 
 import com.marwanmakm.boto.mapper.mappers.BancoDeChileCheckAccountCSVTransactionsMapper;
-import com.marwanmakm.boto.mapper.mappers.BancoDeChileCheckAccountTransactionsMapper;
 import com.marwanmakm.boto.mapper.mappers.BancoDeChileCreditCardTransactionsMapper;
+import com.marwanmakm.boto.mapper.mappers.SantanderCheckAccountCSVTransactionsMapper;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;
@@ -19,8 +19,8 @@ public class TransactionsMapperFactoryImpl implements TransactionsMapperFactory 
   static {
     transactionsMap = new HashMap<>();
     transactionsMap.put(BDC_TDC, new BancoDeChileCreditCardTransactionsMapper());
-    transactionsMap.put(BDC_CHECK, new BancoDeChileCheckAccountTransactionsMapper());
-    transactionsMap.put(BDC_CHECK_CSV, new BancoDeChileCheckAccountCSVTransactionsMapper());
+    transactionsMap.put(BDC_CHECK, new BancoDeChileCheckAccountCSVTransactionsMapper());
+    transactionsMap.put(SANTANDER_CHECK, new SantanderCheckAccountCSVTransactionsMapper());
   }
 
   // TODO: Acomodar esta excepcion

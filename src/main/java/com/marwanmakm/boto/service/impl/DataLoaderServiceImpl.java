@@ -3,12 +3,12 @@ package com.marwanmakm.boto.service.impl;
 import static com.marwanmakm.boto.mapper.CSVFileTemplate.HEADERS;
 
 import com.marwanmakm.boto.dao.AccountsDAO;
-import com.marwanmakm.boto.dao.CategoriesTagsDAO;
+import com.marwanmakm.boto.dao.TagsDAO;
 import com.marwanmakm.boto.dao.TransactionsDAO;
 import com.marwanmakm.boto.dto.OperationResponseDto;
 import com.marwanmakm.boto.entity.Account;
-import com.marwanmakm.boto.entity.CategoryTag;
 import com.marwanmakm.boto.entity.OperationType;
+import com.marwanmakm.boto.entity.Tag;
 import com.marwanmakm.boto.entity.Transaction;
 import com.marwanmakm.boto.service.DataLoaderService;
 import java.io.IOException;
@@ -32,16 +32,14 @@ public class DataLoaderServiceImpl implements DataLoaderService {
 
   private final AccountsDAO accountsDAO;
 
-  private final CategoriesTagsDAO categoriesTagsDAO;
+  private final TagsDAO tagsDAO;
 
   @Autowired
   public DataLoaderServiceImpl(
-      TransactionsDAO transactionsDAO,
-      AccountsDAO accountsDAO,
-      CategoriesTagsDAO categoriesTagsDAO) {
+      TransactionsDAO transactionsDAO, AccountsDAO accountsDAO, TagsDAO tagsDAO) {
     this.transactionsDAO = transactionsDAO;
     this.accountsDAO = accountsDAO;
-    this.categoriesTagsDAO = categoriesTagsDAO;
+    this.tagsDAO = tagsDAO;
   }
 
   @Override
@@ -58,15 +56,15 @@ public class DataLoaderServiceImpl implements DataLoaderService {
 
     for (CSVRecord row : rows) {
       Transaction transaction = new Transaction();
-      transaction.setComposedId(row.get("composed_id"));
+      transaction.setId(row.get("id"));
       transaction.setDate(Date.valueOf(row.get("date")));
       transaction.setAmount(Double.valueOf(row.get("amount")));
       transaction.setComment(row.get("comment"));
       transaction.setOperationType(OperationType.findById(row.get("operation_type")));
 
       if (!row.get("category_tag").isEmpty()) {
-        Optional<CategoryTag> categoryTag = categoriesTagsDAO.findById(row.get("category_tag"));
-        transaction.setCategoryTag(categoryTag.orElse(null));
+        Optional<Tag> categoryTag = tagsDAO.findById(row.get("category_tag"));
+        transaction.setTag(categoryTag.orElse(null));
       }
 
       if (account.isEmpty()) {

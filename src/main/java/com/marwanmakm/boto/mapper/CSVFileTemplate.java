@@ -2,7 +2,10 @@ package com.marwanmakm.boto.mapper;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import lombok.Builder;
 import org.apache.commons.csv.CSVFormat;
@@ -11,17 +14,18 @@ import org.springframework.lang.Nullable;
 
 public class CSVFileTemplate {
 
-  // time-milis_source_transactions.csv
+  // yyyymmdd_source_transactions.csv
   private static final String FILE_PATH_FORMAT = "./export/%s_%s_transactions.csv";
   public static final String[] HEADERS = {
-    "composed_id", "date", "time", "amount", "comment", "account", "operation_type", "category_tag"
+    "id", "date", "amount", "comment", "account", "operation_type", "category_tag"
   };
 
   private List<Row> rows;
 
   private static String createNewFilePath(String sourceType) {
-    String currentMilis = String.valueOf(System.currentTimeMillis());
-    return String.format(FILE_PATH_FORMAT, currentMilis, sourceType);
+    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyyMMdd");
+    String date = outputFormat.format(Date.from(Instant.now()));
+    return String.format(FILE_PATH_FORMAT, date, sourceType);
   }
 
   public void addRow(Row row) {
@@ -51,8 +55,8 @@ public class CSVFileTemplate {
 
   @Builder
   public record Row(
+      String id,
       String date,
-      @Nullable String time,
       String amount,
       @Nullable String comment,
       String account,
@@ -64,12 +68,9 @@ public class CSVFileTemplate {
 
     public List<String> toValueArray() {
 
-      // TODO: Acomodar el valor por defecto del tiempo
-      final var composedId = String.format("%s_%s_%s", date, checkEmpty(time), account);
       return List.of(
-          composedId,
+          account + "_" + id,
           date,
-          checkEmpty(time),
           amount,
           checkEmpty(comment),
           account,
