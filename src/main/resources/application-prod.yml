@@ -1,0 +1,9 @@
+spring:
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  sql:
+    init:
+      data-locations:
+        - classpath:initDBData.sql

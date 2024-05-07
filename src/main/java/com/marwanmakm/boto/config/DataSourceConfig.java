@@ -15,6 +15,18 @@ public class DataSourceConfig {
 
   @Bean
   @Qualifier("datasource")
+  @Profile("prod")
+  public DataSource getProdDataSource(
+      final @Value("${dbuser}") String user, final @Value("${dbpassword}") String password) {
+    return DataSourceBuilder.create()
+        .url("jdbc:postgresql://aws-0-sa-east-1.pooler.supabase.com:5432/postgres")
+        .username(user)
+        .password(password)
+        .build();
+  }
+
+  @Bean
+  @Qualifier("datasource")
   @Profile("local")
   public DataSource getLocalDataSource(
       final @Value("${spring.datasource.host}") String host,
