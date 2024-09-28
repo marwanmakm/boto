@@ -1,12 +1,9 @@
-version: '3.9'
-
 services:
 
   postgres:
     image: postgres:16.2
-    # set shared memory limit when using docker-compose
+    container_name: postgres
     shm_size: 128mb
-    # or set shared memory limit when deploy via swarm stack
     volumes:
       - data:/var/lib/postgresql/data
     ports:
@@ -17,12 +14,39 @@ services:
 
   pg-admin:
     image: dpage/pgadmin4:8.4
+    container_name: pg-admin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@email.com
       PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_LISTEN_PORT: 5050
     ports:
       - "5050:5050"
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks:
+      - localprom
+
+  node-exporter:
+    image: prom/node-exporter
+    container_name: node-exporter
+    networks:
+      - localprom
+    ports:
+      - 9100:9100
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    networks:
+      - localprom
+    ports:
+      - "3000:3000"
 
 volumes:
   data:
@@ -31,3 +55,7 @@ volumes:
       type: none
       o: bind
       device: ./data
+
+networks:
+  localprom:
+    driver: bridge
